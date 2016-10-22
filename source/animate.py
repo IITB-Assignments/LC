@@ -3,7 +3,8 @@ import numpy as np
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import matplotlib.animation as manimation
-
+from main_13d070058 import solve_rlc
+import math
 
 FFMpegWriter = manimation.writers['ffmpeg']
 metadata = dict(title='Movie Test', artist='Matplotlib',
@@ -27,7 +28,7 @@ ax = fig.add_axes([0.1, 0.1, 0.8, 0.8], polar=True, axisbg='#d5de9c')
 # l, =ax.plot(theta, r, color='#ee8d18', lw=3)
 ax.set_rmax(2.0)
 plt.grid(True)
-ax.set_title("Anim", fontsize=20)
+ax.set_title("13d070058", fontsize=20)
 
 # ploting under damped case
 V = 1.0
@@ -37,11 +38,11 @@ C = 1.0e-9
 (vc,i,t) = solve_rlc((V,R,L,C))
 t=t[:700]
 alpha = R/(2*L)
-w = sqrt(1/(L*C)-alpha*alpha)
+w = math.sqrt(1/(L*C)-alpha*alpha)
 
-with writer.saving(fig, "writer_test.mp4", 100):
+with writer.saving(fig, "output/13d070058_anim.mp4", 100):
     for i in t:
-        length = exp(-1*alpha*(i))
+        length = math.exp(-1*alpha*(i))
         arr2 = plt.arrow(w*i, 0, 0, (length)*2*0.8, alpha = 0.5, width = 0.015, head_width=0.1, head_length=(length)*2*0.2,
                  edgecolor = 'black', facecolor = 'red', lw = 2, zorder = 5)
         writer.grab_frame()

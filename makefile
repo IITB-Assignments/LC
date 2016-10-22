@@ -1,30 +1,27 @@
-FILES := report.pdf
-AUXFILES := $(FILES:.pdf=.aux)
-LOGFILES := $(FILES:.pdf=.log)
-BBLFILES := $(FILES:.pdf=.bbl)
-BLGFILES := $(FILES:.pdf=.blg)
-OTHERS := mass_spring_damper.nav mass_spring_damper.out mass_spring_damper.snm mass_spring_damper.toc
+FILES := 13d070058.pdf 
 PICS := $(wildcard *.png)
-PICSDEL := $(filter-out RLC_series_circuit.png,$(PICS))
 PYC := $(wildcard *.pyc)
 
-main : main.py
-	python main.py
-	make pdf
+main :   
+	mkdir output
+	python source/main_13d070058.py
+	python source/animate.py
+	jupyter nbconvert --to html source/13d070058.ipynb
+	mv source/13d070058.html ./output
+	make everything
 
-pdf : $(FILES:.pdf=.tex)
-	make report.pdf
+everything: 
+	cp source/bib_file.bib . 
+	pdflatex -output-directory output source/13d070058.tex 
+	bibtex output/13d070058.aux
+	pdflatex -output-directory output source/13d070058.tex
+	pdflatex -output-directory output source/13d070058.tex
+	rm bib_file.bib
 
-%.pdf: %.tex 
-	pdflatex $<
-	bibtex `echo $< |cut -d "." -f1`.aux
-	pdflatex $<
-	pdflatex $<
-
-.PHONY: clean clean-all
-clean-all:
-	$(RM) $(AUXFILES) $(FILES) $(LOGFILES) $(BBLFILES) $(BLGFILES) $(OTHERS) $(PICSDEL) $(PYC)
-
+.PHONY: clean test
+test:
+	pytest source/main_test.py
 clean:	 
-	$(RM) $(AUXFILES) $(LOGFILES) $(BBLFILES) $(BLGFILES) $(OTHERS) $(PICSDEL) $(PYC)
-
+	rm -rf output
+	rm -rf source/*.pyc
+	rm -rf source/__pycache__
