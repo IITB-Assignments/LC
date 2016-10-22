@@ -1,0 +1,178 @@
+
+%% Report by Nithin M (13D070058)
+
+\documentclass[11pt]{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{hyperref}
+
+%\newtheorem*{defn}{Definition}
+
+\title{RLC circuit}
+\author{Nithin M (13D070058) }
+\date{\today}
+\begin{document}
+\maketitle
+
+\section{Introduction}
+An RLC circuit is an electrical circuit consisting of a resistor (R), an inductor (L), and a capacitor (C), connected in series or in parallel. 
+
+The program generates all the plots required for shown in this pdf and also the animation. You can find the full source code at \url{https://github.com/nithinmurali/acad_assignments}
+
+\subsection{Versions required}
+\begin{itemize}
+\item pthon 2.7
+\item jupyter 4.1.0
+\item latex 3.14
+\item Make 
+\end{itemize}
+
+
+
+\section{Circuit Analysics}
+\begin{figure}[H]
+	\begin{center}
+	\includegraphics[scale=0.5]{RLC_series_circuit.png}
+	\caption{Series RLC circuit}
+	\centering
+	\end{center}
+\end{figure}
+
+In this circuit, the three components are all in series with the voltage source. The governing differential equation can be found by substituting into Kirchhoff's voltage law (KVL) the constitutive equation for each of the three elements. 
+\hfil \break
+From the KVL, 
+\begin{eqnarray*}
+V_R + V_L + V_C = V(t) \\
+V_R = RI(t) \\
+V_L = L\frac{di}{dt} \\
+V_C = \frac{1}{C}\int_{-\infty}^t I(\tau)\, d\tau = V(t)\
+\end{eqnarray*}
+
+For the case where the source is an unchanging voltage, differentiating and dividing by {{mvar|L}} leads to the second order differential equation:
+\begin{equation}
+\frac{d^2}{dt^2}I(t) + \frac{R}{L} \frac{d}{dt}I(t) + \frac{1}{LC} I(t) = 0
+\label{eom}
+\end{equation}
+
+LC tank equation can usefully be expressed in a more generally applicable form:
+\begin{equation}
+\frac{d^2}{dt^2}I(t) + 2 \alpha \frac{d}{dt}I(t) + \omega_0^2 I(t) = 0
+\label{diff_eqn}
+\end{equation}
+
+For the case of the series RLC circuit these two parameters are given by:
+\begin{eqnarray}
+\alpha = \frac{R}{2L} \\
+\label{def_zeta}
+\omega_0 = \frac{1}{\sqrt{LC}}
+\label{def_omega}
+\end{eqnarray}
+
+A useful parameter is the damping factor, ζ, which is defined as the ratio of these two. In the case of the series RLC circuit, the damping factor is given by,
+\begin{equation}
+\zeta = \frac{R}{2} \sqrt\frac{C}{L}
+\label{damp_fac}
+\end{equation}
+
+
+\section{Transient response}
+
+The differential equation for the circuit solves in three different ways depending on the value of ζ,
+
+\begin{itemize}
+	\item{Under-damped system ($\zeta < 1$)}
+	\item{Critically damped system ($\zeta = 1$)}
+	\item{Over-damped system ($\zeta > 1$)}
+\end{itemize}
+
+\noindent\textbf{Under-damped system :} \\
+In under-damped system $\zeta$ is less than 1. \\
+The free response of the system is shown in the figure below$\phantom{}_{\ref{fig1}}$.
+
+\begin{equation}
+I(t) = B e^{-\alpha t} \sin (\omega_\mathrm{d} t + \varphi)
+\label{under-damped-eqn}
+\end{equation}
+
+
+\begin{figure}[H]
+	\centering
+	\centering
+	\includegraphics[scale=0.5]{Free_response_underdamped.png}
+	\caption{Free response of a spring mass damper system}
+\end{figure}
+\label{fig1}
+
+\noindent\textbf{Critically-damped system :} \\
+In critically-damped system $\zeta$ is 1.
+\begin{equation}
+I(t) = D_1 t e^{-\alpha t} + D_2 e^{-\alpha t}
+\label{critically-damped-eqn}
+\end{equation}
+
+
+The response of the system is shown in the figure below$\phantom{}_{\ref{fig10}}$.
+
+\begin{figure}[H]
+	\centering
+	\centering
+	\includegraphics[scale=0.5]{Free_response_criticaldamped.png}
+	\caption{Free response of a spring mass damper system}
+\end{figure}
+\label{fig10}
+
+\noindent\textbf{Over-damped system :} \\
+In under-damped system $\zeta$ is more than 1.
+
+\begin{equation}
+I(t) = A_1 e^{-\omega_0 \left ( \zeta + \sqrt {\zeta^2 - 1} \right ) t} + A_2 e^{-\omega_0 \left ( \zeta - \sqrt {\zeta^2 - 1} \right ) t}
+\label{critically-damped-eqn}
+\end{equation}
+
+
+The free response of the system is shown in the figure below$\phantom{}_{\ref{fig4}}$.
+
+\begin{figure}[H]
+	\centering
+	\centering
+	\includegraphics[scale=0.5]{Free_response_overdamped.png}
+	\caption{Free response of a spring mass damper system}
+\end{figure}
+\label{fig4}
+
+\noindent\textbf{Special case :} \\
+A special case of the system arises when there is zero damping i.e $c = 0$ or $\zeta$ is zero. \\
+
+The free response of the system is shown in the figure below$\phantom{}_{\ref{fig7}}$.
+
+\begin{figure}[H]
+	\centering
+	\centering
+	\includegraphics[scale=0.5]{Free_response_special.png}
+	\caption{Free response of a spring mass damper system}
+\end{figure}
+\label{fig7}
+
+\noindent Upon forcing the system under natural frequency in this special case a resonance is observed. Under this
+forcing the positon variable explodes as time goes to $\infty$.\\
+Forced response is shown in the figure below$\phantom{}_{\ref{fig9}}$.
+
+
+\begin{figure}[H]
+	\centering
+	\begin{tabular} {l}
+	\includegraphics[scale=0.5]{Forced_response_special_natural.png} 
+	\end{tabular}
+	\caption{Forced response of a spring mass damper system}
+\end{figure}
+\label{fig9} 
+
+
+
+\bibliography{bib_file}{}
+\bibliographystyle{plain}
+ 
+\end{document}
